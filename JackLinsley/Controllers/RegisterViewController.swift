@@ -9,6 +9,7 @@
 import UIKit
 
 class RegisterViewController: UIViewController {
+    //the imageview of the textfields have been changed in the storyboard to custom
 
     @IBOutlet weak var emailTextfield: UITextField!
     @IBOutlet weak var passwordTextfield: UITextField!
