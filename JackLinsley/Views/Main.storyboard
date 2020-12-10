@@ -155,7 +155,7 @@
                     <connections>
                         <outlet property="emailTextfield" destination="u72-XV-6FN" id="Nfc-8N-TNr"/>
                         <outlet property="passwordTextfield" destination="hLb-P9-NkF" id="uaM-fo-m8M"/>
-                        <segue destination="lwd-AH-u8E" kind="show" id="WEG-RJ-1kN"/>
+                        <segue destination="lwd-AH-u8E" kind="show" identifier="RegisterToChat" id="WEG-RJ-1kN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -250,7 +250,7 @@
                     <connections>
                         <outlet property="emailTextfield" destination="F21-w0-z4z" id="YUG-Hl-Rxj"/>
                         <outlet property="passwordTextfield" destination="abR-gz-opL" id="xCU-X2-hrx"/>
-                        <segue destination="lwd-AH-u8E" kind="show" id="uUw-2H-wft"/>
+                        <segue destination="lwd-AH-u8E" kind="show" identifier="LoginToChat" id="uUw-2H-wft"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XcE-Gk-YZg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -359,7 +359,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="WEG-RJ-1kN"/>
+        <segue reference="uUw-2H-wft"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="JLBackground" width="2384" height="3370"/>
