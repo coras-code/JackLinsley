@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3637C301259E228D00A448AD /* NearbyGymsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3637C300259E228D00A448AD /* NearbyGymsViewController.swift */; };
+		3637C303259E4A3100A448AD /* Gym.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3637C302259E4A3100A448AD /* Gym.swift */; };
 		36B3EA582578049900D22B47 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B3EA572578049900D22B47 /* AppDelegate.swift */; };
 		36B3EA5A2578049900D22B47 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B3EA592578049900D22B47 /* SceneDelegate.swift */; };
 		36B3EA5C2578049900D22B47 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36B3EA5B2578049900D22B47 /* WelcomeViewController.swift */; };
@@ -19,6 +21,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3637C300259E228D00A448AD /* NearbyGymsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyGymsViewController.swift; sourceTree = "<group>"; };
+		3637C302259E4A3100A448AD /* Gym.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gym.swift; sourceTree = "<group>"; };
 		36B3EA542578049900D22B47 /* JackLinsley.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JackLinsley.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36B3EA572578049900D22B47 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		36B3EA592578049900D22B47 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -89,6 +93,7 @@
 				36B3EA702578104F00D22B47 /* LoginViewController.swift */,
 				36B3EA712578104F00D22B47 /* RegisterViewController.swift */,
 				36B3EA5B2578049900D22B47 /* WelcomeViewController.swift */,
+				3637C300259E228D00A448AD /* NearbyGymsViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -96,6 +101,7 @@
 		36B3EA6D2578053400D22B47 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				3637C302259E4A3100A448AD /* Gym.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -171,8 +177,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				36B3EA732578105000D22B47 /* LoginViewController.swift in Sources */,
+				3637C303259E4A3100A448AD /* Gym.swift in Sources */,
 				36B3EA742578105000D22B47 /* RegisterViewController.swift in Sources */,
 				36B3EA5C2578049900D22B47 /* WelcomeViewController.swift in Sources */,
+				3637C301259E228D00A448AD /* NearbyGymsViewController.swift in Sources */,
 				36B3EA582578049900D22B47 /* AppDelegate.swift in Sources */,
 				36B3EA752578105000D22B47 /* ChatViewController.swift in Sources */,
 				36B3EA5A2578049900D22B47 /* SceneDelegate.swift in Sources */,
