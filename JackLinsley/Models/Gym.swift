@@ -11,4 +11,10 @@ struct Gym {
     let name: String
     let rating: Int
     let openingHours: Bool
+//    
+//    init(name: String, rating: Int, openingHours: Bool) {
+//        self.name = name
+//        self.rating = rating
+//        self.openingHours = openingHours
+//    }
 }
