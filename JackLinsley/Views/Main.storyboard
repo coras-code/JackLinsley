@@ -357,7 +357,7 @@
             </objects>
             <point key="canvasLocation" x="-86.956521739130437" y="134.59821428571428"/>
         </scene>
-        <!--I-->
+        <!--Nearby Gyms-->
         <scene sceneID="2tl-rw-vlx">
             <objects>
                 <tableViewController id="KIs-ZI-Gev" customClass="NearbyGymsViewController" customModule="JackLinsley" customModuleProvider="target" sceneMemberID="viewController">
@@ -366,12 +366,57 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="GymCell" id="Gfc-Zu-EJO">
-                                <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="GymCell" rowHeight="159" id="Gfc-Zu-EJO">
+                                <rect key="frame" x="0.0" y="28" width="414" height="159"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Gfc-Zu-EJO" id="WaQ-T5-E0E">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="159"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="YB0-VI-IkO">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="159"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="1000" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wyK-CB-2am">
+                                                    <rect key="frame" x="0.0" y="0.0" width="42" height="53"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NpZ-aS-Pfk">
+                                                    <rect key="frame" x="0.0" y="53" width="42" height="53"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="NsL-rP-UVD">
+                                                    <rect key="frame" x="0.0" y="106" width="295" height="53"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yGX-Cp-gxy">
+                                                            <rect key="frame" x="0.0" y="0.0" width="59" height="53"/>
+                                                        </imageView>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YMA-Rh-bbI">
+                                                            <rect key="frame" x="59" y="0.0" width="59" height="53"/>
+                                                        </imageView>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gJd-CT-mVa">
+                                                            <rect key="frame" x="118" y="0.0" width="59" height="53"/>
+                                                        </imageView>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="4" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4a5-YD-BUQ">
+                                                            <rect key="frame" x="177" y="0.0" width="59" height="53"/>
+                                                        </imageView>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="5" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ImP-Gd-RYt">
+                                                            <rect key="frame" x="236" y="0.0" width="59" height="53"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="YB0-VI-IkO" firstAttribute="leading" secondItem="WaQ-T5-E0E" secondAttribute="leading" id="4zW-FV-sI5"/>
+                                        <constraint firstAttribute="bottom" secondItem="YB0-VI-IkO" secondAttribute="bottom" id="Jzu-uo-K69"/>
+                                        <constraint firstItem="YB0-VI-IkO" firstAttribute="top" secondItem="WaQ-T5-E0E" secondAttribute="top" id="OI1-Ab-Tri"/>
+                                        <constraint firstAttribute="trailing" secondItem="YB0-VI-IkO" secondAttribute="trailing" id="VBq-jE-S2H"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
@@ -380,7 +425,9 @@
                             <outlet property="delegate" destination="KIs-ZI-Gev" id="USy-iT-dUY"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="I" id="WkB-G0-P16"/>
+                    <navigationItem key="navigationItem" title="Nearby Gyms" id="WkB-G0-P16">
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="globe" catalog="system" id="bVU-Va-VeJ"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TGw-jf-AOI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -411,6 +458,7 @@
     <resources>
         <image name="JLBackground" width="2384" height="3370"/>
         <image name="UItextfield" width="298" height="93"/>
+        <image name="globe" catalog="system" width="128" height="121"/>
         <image name="paperplane.fill" width="128" height="121"/>
         <namedColor name="BrandBlue">
             <color red="0.16470588235294117" green="0.7803921568627451" blue="0.99607843137254903" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
