@@ -8,8 +8,8 @@
 import UIKit
 
 class NearbyGymsViewController : UITableViewController {
-    
-    let gymArray = [
+    //need a strings class
+    let gyms = [
         Gym(name: "JD Gym", rating: 2, openingHours: true),
         Gym(name: "Spikes Gym", rating: 3, openingHours: true),
         Gym(name: "Pulse Fitness", rating: 5, openingHours: true),
@@ -36,77 +36,40 @@ class NearbyGymsViewController : UITableViewController {
     //Mark: - Tableview Datasource Methods
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return gymArray.count
+        return gyms.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "GymCell", for: indexPath)
         
-        //create a new cell subclass
+        cell.selectionStyle = .none
+        
+        //Linking cell in view to controller - create a new CELL subclass
         let nameLabel = cell.viewWithTag(1000) as! UILabel //should it be a var
         let openingHoursLabel = cell.viewWithTag(100) as! UILabel
-        let ratingPosition1 = cell.viewWithTag(1) as! UIImageView
-        let ratingPosition2 = cell.viewWithTag(2) as! UIImageView
-        let ratingPosition3 = cell.viewWithTag(3) as! UIImageView
-        let ratingPosition4 = cell.viewWithTag(4) as! UIImageView
-        let ratingPosition5 = cell.viewWithTag(5) as! UIImageView
+        let imagePosition1 = cell.viewWithTag(1) as! UIImageView
+        let imagePosition2 = cell.viewWithTag(2) as! UIImageView
+        let imagePosition3 = cell.viewWithTag(3) as! UIImageView
+        let imagePosition4 = cell.viewWithTag(4) as! UIImageView
+        let imagePosition5 = cell.viewWithTag(5) as! UIImageView
         
+        //setting up cell
+        nameLabel.text = gyms[indexPath.row].name
+        openingHoursLabel.text = gyms[indexPath.row].openingHours ? "Open Now" : "Closed Now"
         
-        nameLabel.text = gymArray[indexPath.row].name
+        let rating = gyms[indexPath.row].rating
+        let ratingPositions = [imagePosition1, imagePosition2, imagePosition3, imagePosition4, imagePosition5]
         
-        if gymArray[indexPath.row].openingHours == true {
-            openingHoursLabel.text = "Open Now"
-        } else {
-            openingHoursLabel.text = "Closed Now"
+        for (index, position) in ratingPositions.enumerated() {
+            position.image = index < rating ? UIImage(named: "star_icon_filled") : UIImage(named: "star_icon")
         }
-        //how to refactor this
-        switch gymArray[indexPath.row].rating {
-        case 1:
-            ratingPosition1.image = UIImage(named: "star_icon_filled")
-            ratingPosition2.image = UIImage(named: "star_icon")
-            ratingPosition3.image = UIImage(named: "star_icon")
-            ratingPosition4.image = UIImage(named: "star_icon")
-            ratingPosition5.image = UIImage(named: "star_icon")
-        case 2:
-            ratingPosition1.image = UIImage(named: "star_icon_filled")
-            ratingPosition2.image = UIImage(named: "star_icon_filled")
-            ratingPosition3.image = UIImage(named: "star_icon")
-            ratingPosition4.image = UIImage(named: "star_icon")
-            ratingPosition5.image = UIImage(named: "star_icon")
-        case 3:
-            ratingPosition1.image = UIImage(named: "star_icon_filled")
-            ratingPosition2.image = UIImage(named: "star_icon_filled")
-            ratingPosition3.image = UIImage(named: "star_icon_filled")
-            ratingPosition4.image = UIImage(named: "star_icon")
-            ratingPosition5.image = UIImage(named: "star_icon")
-        case 4:
-            ratingPosition1.image = UIImage(named: "star_icon_filled")
-            ratingPosition2.image = UIImage(named: "star_icon_filled")
-            ratingPosition3.image = UIImage(named: "star_icon_filled")
-            ratingPosition4.image = UIImage(named: "star_icon_filled")
-            ratingPosition4.image = UIImage(named: "star_icon")
-        case 5:
-            ratingPosition1.image = UIImage(named: "star_icon_filled")
-            ratingPosition2.image = UIImage(named: "star_icon_filled")
-            ratingPosition3.image = UIImage(named: "star_icon_filled")
-            ratingPosition4.image = UIImage(named: "star_icon_filled")
-            ratingPosition5.image = UIImage(named: "star_icon_filled")
-        
-        default: //can i get rid as i wont need this if the rating is always 1-5
-            ratingPosition1.image = UIImage(named: "star_icon")
-            ratingPosition2.image = UIImage(named: "star_icon")
-            ratingPosition3.image = UIImage(named: "star_icon")
-            ratingPosition4.image = UIImage(named: "star_icon")
-            ratingPosition5.image = UIImage(named: "star_icon")
-        }
-        
-        cell.selectionStyle = .none
+    
         return cell
     }
     
       //Mark: - Tableview Delegate Methods
-        override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
        tableView.allowsSelection = false
        
@@ -114,6 +77,18 @@ class NearbyGymsViewController : UITableViewController {
 
 }
 
+//alternate for the cel? delete if dont use?
+class GymCell: UITableViewCell {
+    @IBOutlet weak var nameLabel: UILabel! //naming check, also check constriaints and colours and refactoring
+    
+    @IBOutlet weak var openingHoursLabel: UILabel!
+    
+    @IBOutlet weak var ratingPosition1: UIImageView! //make this a class
+    @IBOutlet weak var ratingPosition2: UIImageView!
+    @IBOutlet weak var ratingPosition3: UIImageView!
+    @IBOutlet weak var ratingPosition4: UIImageView!
+    @IBOutlet weak var ratingPosition5: UIImageView!
+}
 
 
 
