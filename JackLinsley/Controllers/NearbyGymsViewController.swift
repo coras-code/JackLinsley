@@ -11,19 +11,19 @@ class NearbyGymsViewController : UITableViewController {
     //need a strings class
     let gyms = [
         Gym(name: "JD Gym", rating: 2, openingHours: true),
-        Gym(name: "Spikes Gym", rating: 3, openingHours: true),
+        Gym(name: "Spikes Gym", rating: 3, openingHours: false),
         Gym(name: "Pulse Fitness", rating: 5, openingHours: true),
         
         Gym(name: "JD Gym", rating: 2, openingHours: true),
         Gym(name: "Spikes Gym", rating: 3, openingHours: true),
         Gym(name: "Pulse Fitness", rating: 5, openingHours: true),
         Gym(name: "JD Gym", rating: 2, openingHours: true),
-        Gym(name: "Spikes Gym", rating: 3, openingHours: true),
+        Gym(name: "Spikes Gym", rating: 3, openingHours: false),
         Gym(name: "Pulse Fitness", rating: 5, openingHours: true),
         Gym(name: "JD Gym", rating: 2, openingHours: true),
         Gym(name: "Spikes Gym", rating: 3, openingHours: true),
         Gym(name: "Pulse Fitness", rating: 5, openingHours: true),
-        Gym(name: "JD Gym", rating: 2, openingHours: true),
+        Gym(name: "JD Gym", rating: 2, openingHours: false),
         Gym(name: "Spikes Gym", rating: 3, openingHours: true),
         Gym(name: "Pulse Fitness", rating: 5, openingHours: true)
     ]
@@ -34,7 +34,6 @@ class NearbyGymsViewController : UITableViewController {
     }
     
     //Mark: - Tableview Datasource Methods
-    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return gyms.count
     }
@@ -45,7 +44,7 @@ class NearbyGymsViewController : UITableViewController {
         
         cell.selectionStyle = .none
         
-        //Linking cell in view to controller - create a new CELL subclass
+       // Linking cell in view to controller - create a new CELL subclass
         let nameLabel = cell.viewWithTag(1000) as! UILabel //should it be a var
         let openingHoursLabel = cell.viewWithTag(100) as! UILabel
         let imagePosition1 = cell.viewWithTag(1) as! UIImageView
@@ -57,6 +56,7 @@ class NearbyGymsViewController : UITableViewController {
         //setting up cell
         nameLabel.text = gyms[indexPath.row].name
         openingHoursLabel.text = gyms[indexPath.row].openingHours ? "Open Now" : "Closed Now"
+        openingHoursLabel.textColor = gyms[indexPath.row].openingHours ? UIColor.black : UIColor.red
         
         let rating = gyms[indexPath.row].rating
         let ratingPositions = [imagePosition1, imagePosition2, imagePosition3, imagePosition4, imagePosition5]
@@ -68,7 +68,7 @@ class NearbyGymsViewController : UITableViewController {
         return cell
     }
     
-      //Mark: - Tableview Delegate Methods
+    //Mark: - Tableview Delegate Methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
        tableView.allowsSelection = false
