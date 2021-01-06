@@ -8,7 +8,13 @@
 import UIKit
 
 class NearbyGymsViewController : UITableViewController {
+    
+    var coordinateMode = true
+    
     //need a strings class
+    
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     let gyms = [
         Gym(name: "JD Gym", rating: 2, openingHours: true),
         Gym(name: "Spikes Gym", rating: 3, openingHours: false),
@@ -29,7 +35,12 @@ class NearbyGymsViewController : UITableViewController {
     ]
     
     override func viewDidLoad() {
-         //let nearestGym = gymArray[0].name
+        searchBar.delegate = self
+        //if coordinateMode {
+       //     searchBar.isUserInteractionEnabled = false
+     
+            
+      //  }
           
     }
     
@@ -74,7 +85,99 @@ class NearbyGymsViewController : UITableViewController {
        tableView.allowsSelection = false
        
     }
+    
+    //MARK: - Bar Button Item
+    @IBOutlet weak var barButton: UIBarButtonItem!
+    
+    
+    @IBAction func barButtonPressed(_ sender: UIBarButtonItem) {
+        //this changes the mode
+        if coordinateMode {
+            sender.image =  UIImage(systemName: "pencil.circle")
+            searchBar.isUserInteractionEnabled = true
+            //change input etc. //now it is in address mode
+        } else {
+            sender.image =  UIImage(systemName: "globe")
+            //now it is coordinate mode, input is lat and longitiude
+        }
+        
+        coordinateMode = !coordinateMode
 
+    }
+    
+    //SearchBar
+    
+   
+    
+}
+
+//MARK: - Search Bar Methods
+extension NearbyGymsViewController: UISearchBarDelegate {
+    //let coordinates = ""
+    
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        if coordinateMode {
+            showAlert()
+            return false
+        } else {
+            return true
+        }
+        
+    }
+    
+    
+    func showAlert() {
+        
+        var latitudeTextField = UITextField()
+        var longitudeTextField = UITextField()
+        
+        let alert = UIAlertController(title: "Find nearby gyms to a specfic location", message: "", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Search Gyms", style: .default) { (action) in
+            //what will happen when you press action button
+            //dont force on wrap?
+            self.searchBar.searchTextField.text = "\(latitudeTextField.text!); \(longitudeTextField.text!)"
+        }
+        
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Enter Latitude"
+            latitudeTextField = alertTextField
+        }
+        
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Enter Longitude"
+            longitudeTextField = alertTextField
+        }
+        
+        alert.addAction(action)
+         
+        present(alert, animated: true, completion: nil)
+    }
+        
+//        searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+//         let alert = UIAlertController(title: "jjj", message: "",u preferredStyle: .alert)
+//               let action = UIAlertAction(title: "Search Gyms", style: .default) { (action) in
+//                  //what will happen when you press add item
+//                   print("Print Success")
+//              }
+//
+//              alert.addAction(action)
+//
+//               present(alert, animated: true, completion: nil)
+//
+        
+        //put the inputs into the search box
+       // searchBarSearchButtonClicked(searchBar)
+        
+//    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+       
+       
+    }
+    
+    
+    
 }
 
 //alternate for the cel? delete if dont use?

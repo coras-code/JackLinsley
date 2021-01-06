@@ -361,13 +361,18 @@
         <scene sceneID="2tl-rw-vlx">
             <objects>
                 <tableViewController id="KIs-ZI-Gev" customClass="NearbyGymsViewController" customModule="JackLinsley" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="vyV-vH-i55" userLabel="Gyms" customClass="G">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="vyV-vH-i55" userLabel="Gyms">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="7ev-Rh-BlN">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </searchBar>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="GymCell" rowHeight="139" id="Gfc-Zu-EJO">
-                                <rect key="frame" x="0.0" y="28" width="414" height="139"/>
+                                <rect key="frame" x="0.0" y="72" width="414" height="139"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Gfc-Zu-EJO" id="WaQ-T5-E0E">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="139"/>
@@ -467,14 +472,18 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="KIs-ZI-Gev" id="s99-et-QQt"/>
-                            <outlet property="delegate" destination="KIs-ZI-Gev" id="USy-iT-dUY"/>
-                        </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Nearby Gyms" id="WkB-G0-P16">
-                        <barButtonItem key="rightBarButtonItem" title="Item" image="globe" catalog="system" id="bVU-Va-VeJ"/>
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="globe" catalog="system" id="bVU-Va-VeJ">
+                            <connections>
+                                <action selector="barButtonPressed:" destination="KIs-ZI-Gev" id="gfS-Lp-VzQ"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="barButton" destination="bVU-Va-VeJ" id="RVE-9w-f6Y"/>
+                        <outlet property="searchBar" destination="7ev-Rh-BlN" id="ylf-ye-8k2"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TGw-jf-AOI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
