@@ -138,11 +138,15 @@ extension NearbyGymsViewController: UISearchBarDelegate {
         
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Enter Latitude"
+            alertTextField.keyboardType = .numberPad
+            alertTextField.addNumericAccessory()
             latitudeTextField = alertTextField
         }
         
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Enter Longitude"
+            alertTextField.keyboardType = .numberPad
+            alertTextField.addNumericAccessory()
             longitudeTextField = alertTextField
         }
         
@@ -181,4 +185,40 @@ class GymCell: UITableViewCell {
 }
 
 
+extension UITextField {
 
+func addNumericAccessory() {
+    let numberToolbar = UIToolbar()
+    numberToolbar.barStyle = UIBarStyle.default
+
+    var accessories : [UIBarButtonItem] = []
+
+    accessories.append(UIBarButtonItem(title: "+/-", style: UIBarButtonItem.Style.plain, target: self, action: #selector(plusMinusPressed)))
+    accessories.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil))
+    accessories.append(UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.plain, target: self, action: #selector(numberPadDone)))
+
+    numberToolbar.items = accessories
+    numberToolbar.sizeToFit()
+
+    inputAccessoryView = numberToolbar
+}
+
+@objc func numberPadDone() {
+    self.resignFirstResponder()
+}
+
+@objc func plusMinusPressed() {
+    guard let currentText = self.text else {
+        return
+    }
+    if currentText.hasPrefix("-") {
+        let offsetIndex = currentText.index(currentText.startIndex, offsetBy: 1)
+        let substring = currentText[offsetIndex...]  //remove first character
+        self.text = String(substring)
+    }
+    else {
+        self.text = "-" + currentText
+    }
+}
+
+}
