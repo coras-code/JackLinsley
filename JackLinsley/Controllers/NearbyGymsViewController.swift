@@ -35,8 +35,20 @@ class NearbyGymsViewController : UITableViewController {
     
     override func viewDidLoad() {
         searchBar.delegate = self
-        coordinateModeEnabled()
+        modeSelection(coordinateModeEnabled: coordinateModeEnabled)
     }
+    
+    func modeSelection(coordinateModeEnabled: Bool) {
+        if coordinateModeEnabled {
+            barButton.image =  UIImage(systemName: "globe")
+            searchBar.placeholder = "Search using latitude and longitude"
+            } else {
+            //addressModeEnabled:
+            barButton.image =  UIImage(systemName: "pencil.circle")
+            searchBar.placeholder = "Search using address"
+                
+            }
+        }
     
     //MARK: - Tableview Datasource Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -81,25 +93,13 @@ class NearbyGymsViewController : UITableViewController {
     }
     
     //MARK: - Bar Button Item
-    @IBAction func barButtonPressed(_ sender: UIBarButtonItem) {
-        //this changes the mode
-        if coordinateMode {
-            //addressModeEnabled:
-            sender.image =  UIImage(systemName: "pencil.circle")
-            searchBar.placeholder = "Search using address"
-        } else {
-            coordinateModeEnabled()
-        }
-        coordinateMode = !coordinateMode
+    @IBAction func barButtonPressed(_ sender: UIBarButtonItem) { //this changes the mode
+        coordinateModeEnabled = !coordinateModeEnabled
+        modeSelection(coordinateModeEnabled: coordinateModeEnabled)
         searchBar.text = ""// clear the search bar
+        searchBar.resignFirstResponder()
         //clear table view?
         //replace tableview with current location date, to show this have a filled location
-    }
-    
-    func coordinateModeEnabled() {
-        barButton.image =  UIImage(systemName: "globe")
-        searchBar.placeholder = "Search using latitude and longitude"
-        
     }
 }
 
@@ -107,63 +107,95 @@ class NearbyGymsViewController : UITableViewController {
 extension NearbyGymsViewController: UISearchBarDelegate {
     //let coordinates = "" // for API
     
+//    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+//        //right now there is no indication of what is the tableview, so this method is a bad idea
+//        //however if there was a map and it displayed where the data is from, i could have this function
+//        //only applies to address as the coordinate mode is never begins editing
+//        searchBar.text = ""
+//    }
+//
+    //Address Mode Input
+    //would use 'Did end editing method' here if you can search in two places e.g. a search button and the search on the keyboard
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        // searchBar.text //INPUT
+        print(searchBar.text!)
+        barButton.isEnabled = true
+        searchBar.endEditing(true)
+    }
+    
+    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+        //this means the user can exit unless they enter something - allow them to have an exit - tap gesture (tapping out side the keyboard??)
+        if searchBar.text != "" {
+            return true
+        } else {
+            searchBar.shake()
+           // searchBar.resignFirstResponder() //or end editing??
+            return false
+        }
+    }
+    
+    //Coordinate Mode Input
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        if coordinateMode {
+        if coordinateModeEnabled {
             coordinateEntry()
-            searchBar.isUserInteractionEnabled = false //do i need this line, because i dont think i disable it
             return false
         } else {
-            searchBar.isUserInteractionEnabled = true //dont think i need this
+            barButton.isEnabled = false
             return true
+            
         }
     }
     
     func coordinateEntry() {
-        
         var latitudeTextField = UITextField()
         var longitudeTextField = UITextField()
         
-        let alert = UIAlertController(title: "Find nearby gyms to a specfic location", message: "", preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: "Search Gyms", style: .default) { (action) in
-            //Result of action button pressed
-            if latitudeTextField.text != "", longitudeTextField.text != "" {
-                self.searchBar.searchTextField.text = "\(latitudeTextField.text!); \(longitudeTextField.text!)"
-            }
-            
-            //can force unwrap because a textfield can nevr be nil - just an empty string
-           //need to deal with empty strings: one and other
-            //loading cell appears //then tabledata reloads with new info
-        }
+        let alert = UIAlertController(title: K.alertTitle, message: K.alertMessage, preferredStyle: .alert)
         
         alert.addTextField { (alertTextField) in
-            alertTextField.placeholder = "Enter Latitude"
+            alertTextField.placeholder = "Enter Latitude" //K.latitudeTextFieldPlaceholder
             alertTextField.keyboardType = .numberPad
             alertTextField.addNumericAccessory()
             latitudeTextField = alertTextField
         }
         
         alert.addTextField { (alertTextField) in
-            alertTextField.placeholder = "Enter Longitude"
+            alertTextField.placeholder = "Enter Longitude" //K.longitudeTextFieldPlaceholder
             alertTextField.keyboardType = .numberPad
             alertTextField.addNumericAccessory()
             longitudeTextField = alertTextField
+            
         }
         
+        let action = UIAlertAction(title: "Search Gyms", style: .default) { (action) in
+            //Result of action button pressed
+            if latitudeTextField.text != "", longitudeTextField.text != "" {
+                if let latitide = latitudeTextField.text, let longitude = longitudeTextField.text {
+                    self.gymManager.fetchGyms(latitude: latitide, longitude: longitude)
+                }
+                
+                self.searchBar.searchTextField.text = "\(latitudeTextField.text!); \(longitudeTextField.text!)" //API INPUT
+                
+            } else {self.searchBar.shake()}
+            
+            //can force unwrap because a textfield can never be nil - just an empty string
+           //need to deal with empty strings: one and other, maybe a shake and says enter both
+            //loading cell appears //then tabledata reloads with new info
+        }
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .default) { (action) in
+            //Result of cancel button pressed
+            //pass "" in to lat and long how does this affect api
+        }
+        
+        alert.addAction(cancel)
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
         
         //latitudeTextField.text! //longitudeTextField.text! - this needs to be passed in as an input
     }
     
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        //this only comes up in address mode
-    }
 }
-
-
-
-
 
 
 
@@ -221,4 +253,14 @@ func addNumericAccessory() {
     }
 }
 
+}
+
+extension UIView {
+    func shake() {
+        let animation = CAKeyframeAnimation(keyPath: "transform.translation.x")
+        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
+        animation.duration = 0.6
+        animation.values = [-20.0, 20.0, -20.0, 20.0, -10.0, 10.0, -5.0, 5.0, 0.0 ]
+        layer.add(animation, forKey: "shake")
+    }
 }
