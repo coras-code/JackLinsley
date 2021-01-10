@@ -6,35 +6,28 @@
 //
 
 import UIKit
-
-class NearbyGymsViewController : UITableViewController {
+//need a strings class //use tableview in a view as an improvement?? //when serperating out into extensions, should IBOutlets and in viewDidLoad be in there too?
+//mention ho not got dark mode enabled
+class NearbyGymsViewController : UITableViewController, GymManagerDelegate {
     
-    var coordinateMode = true
+    //how to name this boolean
+    var coordinateModeEnabled = true
+    var gymManager = GymManager()
+    var gyms: [GymModel] = []
+    
+    func didUpdateGyms(gyms: [GymModel]) {
+        DispatchQueue.main.async {
+            self.gyms = gyms
+            self.tableView.reloadData()
+        }
+    }
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var barButton: UIBarButtonItem!
     
-    let gyms = [
-        Gym(name: "JD Gym", rating: 2, openingHours: true),
-        Gym(name: "Spikes Gym", rating: 3, openingHours: false),
-        Gym(name: "Pulse Fitness", rating: 5, openingHours: true),
-        
-        Gym(name: "JD Gym", rating: 2, openingHours: true),
-        Gym(name: "Spikes Gym", rating: 3, openingHours: true),
-        Gym(name: "Pulse Fitness", rating: 5, openingHours: true),
-        Gym(name: "JD Gym", rating: 2, openingHours: true),
-        Gym(name: "Spikes Gym", rating: 3, openingHours: false),
-        Gym(name: "Pulse Fitness", rating: 5, openingHours: true),
-        Gym(name: "JD Gym", rating: 2, openingHours: true),
-        Gym(name: "Spikes Gym", rating: 3, openingHours: true),
-        Gym(name: "Pulse Fitness", rating: 5, openingHours: true),
-        Gym(name: "JD Gym", rating: 2, openingHours: false),
-        Gym(name: "Spikes Gym", rating: 3, openingHours: true),
-        Gym(name: "Pulse Fitness", rating: 5, openingHours: true)
-    ]
-    
     override func viewDidLoad() {
         searchBar.delegate = self
+        gymManager.delegate = self
         modeSelection(coordinateModeEnabled: coordinateModeEnabled)
     }
     
@@ -42,13 +35,12 @@ class NearbyGymsViewController : UITableViewController {
         if coordinateModeEnabled {
             barButton.image =  UIImage(systemName: "globe")
             searchBar.placeholder = "Search using latitude and longitude"
-            } else {
+        } else {
             //addressModeEnabled:
             barButton.image =  UIImage(systemName: "pencil.circle")
             searchBar.placeholder = "Search using address"
-                
-            }
         }
+    }
     
     //MARK: - Tableview Datasource Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -72,14 +64,19 @@ class NearbyGymsViewController : UITableViewController {
         
         //setting up cell
         nameLabel.text = gyms[indexPath.row].name
-        openingHoursLabel.text = gyms[indexPath.row].openingHours ? "Open Now" : "Closed Now"
-        openingHoursLabel.textColor = gyms[indexPath.row].openingHours ? UIColor.black : UIColor.red
         
-        let rating = gyms[indexPath.row].rating
-        let ratingPositions = [imagePosition1, imagePosition2, imagePosition3, imagePosition4, imagePosition5]
+        let openingDescription = gyms[indexPath.row].openingDescription
+        openingHoursLabel.text = openingDescription
+        openingHoursLabel.textColor = openingDescription == "Open Now" ? UIColor.black : UIColor.red
         
-        for (index, position) in ratingPositions.enumerated() {
-            position.image = index < rating ? UIImage(named: "star_icon_filled") : UIImage(named: "star_icon")
+        if let ratingDouble = gyms[indexPath.row].rating {
+            let rating = Int(ratingDouble)
+            
+            let ratingPositions = [imagePosition1, imagePosition2, imagePosition3, imagePosition4, imagePosition5]
+            
+            for (index, position) in ratingPositions.enumerated() {
+                position.image = index < rating ? UIImage(named: "star_icon_filled") : UIImage(named: "star_icon")
+            }
         }
         
         return cell
@@ -103,22 +100,20 @@ class NearbyGymsViewController : UITableViewController {
     }
 }
 
+////MARK: - Table View Methods
+//extension NearbyGymsViewController: UITableView {
+//}
+
 //MARK: - Search Bar Methods
 extension NearbyGymsViewController: UISearchBarDelegate {
-    //let coordinates = "" // for API
-    
-//    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-//        //right now there is no indication of what is the tableview, so this method is a bad idea
-//        //however if there was a map and it displayed where the data is from, i could have this function
-//        //only applies to address as the coordinate mode is never begins editing
-//        searchBar.text = ""
-//    }
-//
     //Address Mode Input
-    //would use 'Did end editing method' here if you can search in two places e.g. a search button and the search on the keyboard
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // searchBar.text //INPUT
         print(searchBar.text!)
+        if let address = searchBar.text {
+            //gymManager.fetchNearbyGyms(address)
+            gymManager.performRequest()
+        }
         barButton.isEnabled = true
         searchBar.endEditing(true)
     }
@@ -129,7 +124,7 @@ extension NearbyGymsViewController: UISearchBarDelegate {
             return true
         } else {
             searchBar.shake()
-           // searchBar.resignFirstResponder() //or end editing??
+            // searchBar.resignFirstResponder() //or end editing??
             return false
         }
     }
@@ -142,7 +137,6 @@ extension NearbyGymsViewController: UISearchBarDelegate {
         } else {
             barButton.isEnabled = false
             return true
-            
         }
     }
     
@@ -169,17 +163,22 @@ extension NearbyGymsViewController: UISearchBarDelegate {
         
         let action = UIAlertAction(title: "Search Gyms", style: .default) { (action) in
             //Result of action button pressed
-            if latitudeTextField.text != "", longitudeTextField.text != "" {
-                if let latitide = latitudeTextField.text, let longitude = longitudeTextField.text {
-                    self.gymManager.fetchGyms(latitude: latitide, longitude: longitude)
-                }
+            
+            if let lat = latitudeTextField.text, let long = longitudeTextField.text {
+                //   self.gymManager.fetchNearbyGyms(lat, long)
+                self.gymManager.performRequest()
+                print(self.gyms)
+                self.tableView.reloadData()
                 
-                self.searchBar.searchTextField.text = "\(latitudeTextField.text!); \(longitudeTextField.text!)" //API INPUT
-                
-            } else {self.searchBar.shake()}
+            }
+            
+            
+            //            if latitudeTextField.text != "", longitudeTextField.text != "" {
+            //                self.searchBar.searchTextField.text = "\(latitudeTextField.text!); \(longitudeTextField.text!)" //API INPUT
+            //            } else {self.searchBar.shake()}
             
             //can force unwrap because a textfield can never be nil - just an empty string
-           //need to deal with empty strings: one and other, maybe a shake and says enter both
+            //need to deal with empty strings: one and other, maybe a shake and says enter both
             //loading cell appears //then tabledata reloads with new info
         }
         
@@ -218,41 +217,63 @@ class GymCell: UITableViewCell {
 
 
 extension UITextField {
-
-func addNumericAccessory() {
-    let numberToolbar = UIToolbar()
-    numberToolbar.barStyle = UIBarStyle.default
-
-    var accessories : [UIBarButtonItem] = []
-
-    accessories.append(UIBarButtonItem(title: "+/-", style: UIBarButtonItem.Style.plain, target: self, action: #selector(plusMinusPressed)))
-    accessories.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil))
-    accessories.append(UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.plain, target: self, action: #selector(numberPadDone)))
-
-    numberToolbar.items = accessories
-    numberToolbar.sizeToFit()
-
-    inputAccessoryView = numberToolbar
-}
-
-@objc func numberPadDone() {
-    self.resignFirstResponder()
-}
-
-@objc func plusMinusPressed() {
-    guard let currentText = self.text else {
-        return
+    
+    
+    //combine these
+    
+    //also dismiss keyboard by tapping else where
+    //    func setupTextFields() {
+    //           let toolbar = UIToolbar()
+    //           let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
+    //                                           target: nil, action: nil)
+    //           let doneButton = UIBarButtonItem(title: "Done", style: .done,
+    //                                            target: self, action: #selector(doneButtonTapped))
+    //
+    //           toolbar.setItems([flexSpace, doneButton], animated: true)
+    //           toolbar.sizeToFit()
+    //
+    //           textField1.inputAccessoryView = toolbar
+    //           textField2.inputAccessoryView = toolbar
+    //       }
+    //
+    //       @objc func doneButtonTapped() {
+    //           view.endEditing(true)
+    //       }
+    
+    func addNumericAccessory() {
+        let numberToolbar = UIToolbar()
+        numberToolbar.barStyle = UIBarStyle.default
+        
+        var accessories : [UIBarButtonItem] = []
+        
+        accessories.append(UIBarButtonItem(title: "+/-", style: UIBarButtonItem.Style.plain, target: self, action: #selector(plusMinusPressed)))
+        accessories.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil))
+        accessories.append(UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.plain, target: self, action: #selector(numberPadDone)))
+        
+        numberToolbar.items = accessories
+        numberToolbar.sizeToFit()
+        
+        inputAccessoryView = numberToolbar
     }
-    if currentText.hasPrefix("-") {
-        let offsetIndex = currentText.index(currentText.startIndex, offsetBy: 1)
-        let substring = currentText[offsetIndex...]  //remove first character
-        self.text = String(substring)
+    
+    @objc func numberPadDone() {
+        self.resignFirstResponder()
     }
-    else {
-        self.text = "-" + currentText
+    
+    @objc func plusMinusPressed() {
+        guard let currentText = self.text else {
+            return
+        }
+        if currentText.hasPrefix("-") {
+            let offsetIndex = currentText.index(currentText.startIndex, offsetBy: 1)
+            let substring = currentText[offsetIndex...]  //remove first character
+            self.text = String(substring)
+        }
+        else {
+            self.text = "-" + currentText
+        }
     }
-}
-
+    
 }
 
 extension UIView {

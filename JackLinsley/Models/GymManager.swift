@@ -2,113 +2,73 @@
 //  GymManager.swift
 //  JackLinsley
 //
-//  Created by My Apps on 07/01/2021.
+//  Created by My Apps on 09/01/2021.
 //
-
-//import Foundation
-//import CoreLocation
-//
-//struct GymManager {
-//
-//
-//
-//    //full place URL
-//   //https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=(/latitude),(/longitude)&rankby=distance&type=gym&keyword=&key=AIzaSyDQTyjE6jp4wwJRtqHWjMHbqlvHFJ-YAKI
-//
-//    //broken down
-//    //https://maps.googleapis.com/maps/api/place/nearbysearch/json?type=gym&rankby=distance&location=(/latitude),(/longitude)&key=AIzaSyDQTyjE6jp4wwJRtqHWjMHbqlvHFJ-YAKI
-//
-//
-//
-//    let placesURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?rankby=distance"
-//
-//    let addressURL = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?rankby=distance"
-//
-//    let APIKey = "AIzaSyDQTyjE6jp4wwJRtqHWjMHbqlvHFJ-YAKI"
-//
-//
-////    https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=mongolian%20grill&inputtype=textquery
-////
-////    &fields=name,opening_hours,rating
-////    &locationbias=circle:2000@47.6918452,-122.2226413&key=AIzaSyDQTyjE6jp4wwJRtqHWjMHbqlvHFJ-YAKI
-//
-//
-//
-//    //remember to add keyword surf in other application
-//    func fetchGyms(latitude: String, longitude: String) {
-//        let urlString = "\(placesURL)&location=\(latitude),\(longitude)&type=gym&key=\(APIKey)"
-//        print(urlString)
-//    }
-//
-//
-//
-//    func iTunesURL(searchText: String) -> URL {
-//        let urlString = String(format: "https://itunes.apple.com/search?term=%@", searchText)
-//        let url = URL(string: urlString)
-//      return url!
-//      }
-//
-//    func iTunesURL(searchText: String) -> URL {
-//    let encodedText = searchText.addingPercentEncoding( withAllowedCharacters: CharacterSet.urlQueryAllowed)!
-//        let urlString = String(format:
-//    "https://itunes.apple.com/search?term=%@", encodedText)
-//
-//        let url = URL(string: urlString)
-//    return url!
-//    }
-//
-//
-//
-//
-//
-//
-//    func performStoreRequest(with url: URL) -> String? { do {
-//    return try String(contentsOf: url, encoding: .utf8) } catch {
-//    print("Download Error: \(error.localizedDescription)")
-//    return nil
-//    } }
-//
-//
-//
-//
-//
-//
-////
-////    func fetchGyms(address: String) {
-////        let urlString = "\(placesURL)&location=\(latitude),\(longitude)&type=gym&key=\(APIKey)"
-////        print(urlString)
-////    }
-//
-//
-//
-//    func getCoordinate( addressString : String,
-//            completionHandler: @escaping(CLLocationCoordinate2D, NSError?) -> Void ) {
-//        let geocoder = CLGeocoder()
-//        geocoder.geocodeAddressString(addressString) { (placemarks, error) in
-//            if error == nil {
-//                if let placemark = placemarks?[0] {
-//                    let location = placemark.location!
-//
-//                    completionHandler(location.coordinate, nil)
-//                    return
-//                }
-//            }
-//
-//            completionHandler(kCLLocationCoordinate2DInvalid, error as NSError?)
-//        }
-//    }
-//}
 
 import Foundation
-import CoreLocation
+
+protocol GymManagerDelegate {
+    func didUpdateGyms(gyms: [GymModel])
+}
 
 struct GymManager {
     
-    let gymsURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?type=gym&rankby=distance"
-    let API_KEY = "AIzaSyDQTyjE6jp4wwJRtqHWjMHbqlvHFJ-YAKI"
-    
-    func fetchNearbyGyms(latitude: String, longitude: String) {
-        let urlString = "\(gymsURL)&location=\(latitude),\(longitude)&key=\(API_KEY)"
-    }
 
+    var delegate: GymManagerDelegate?
+    
+    func performRequest() {
+        let urlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=50.4164582,-5.100202299999978&rankby=distance&type=gym&keyword=&key=AIzaSyDQTyjE6jp4wwJRtqHWjMHbqlvHFJ-YAKI"
+        let url = URL(string: urlString)
+        
+        guard url != nil else {
+            return
+            //log something to say what happened
+        }
+        
+        
+        let session = URLSession(configuration: .default)
+        
+        let task = session.dataTask(with: url!) { (data, response, error) in
+            
+            if error == nil && data != nil {//check for errors
+               
+                if let gyms = self.parseJSON(gymData: data!) {
+                    self.delegate?.didUpdateGyms(gyms: gyms)
+                }
+            }
+        }
+        //
+        task.resume()
+        
+        
+    }
+    
+   func parseJSON(gymData: Data) -> [GymModel]? {
+    
+    //parse json
+    var gyms: [GymModel] = []
+    let decoder = JSONDecoder()
+    do {
+        let decodedData = try decoder.decode(Response.self, from: gymData)
+        let count = decodedData.results!.count
+        
+        if decodedData.results!.isEmpty {
+            
+        } else {
+            for index in 0..<count {
+                let name = decodedData.results![index].name
+                let rating = decodedData.results![index].rating
+                let openNow = decodedData.results![index].opening_hours?.open_now
+                
+                let gym = GymModel(name: name, rating: rating, openNow: openNow)
+                gyms.append(gym)
+            }
+            //print(gyms)
+            return gyms
+        }
+    } catch {
+        print("Error in parsing")
+    }
+        return gyms
+    }
 }
