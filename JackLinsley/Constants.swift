@@ -13,6 +13,7 @@ struct K {
     static let cellNibName = "GymCell" //when ive got more than one of these should they be placed in different ones
     //static let cellIdentifier = "ReusableGymCell" //need to change this in cell storyboard
     static let cellIdentifier = "ReusableCell"
+    static let nearbyDistance = 1.0
     
     struct BrandColours {
         static let turquoise = "BrandTurquoise"

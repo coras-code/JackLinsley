@@ -82,7 +82,6 @@ class NearbyGymsViewController : UITableViewController, GymManagerDelegate {
                 position!.image = index < rating ? UIImage(named: K.images.filledStar) : UIImage(named: K.images.emptyStar)
             }
         }
-        
         return cell
     }
     
@@ -115,10 +114,7 @@ extension NearbyGymsViewController: UISearchBarDelegate {
         // searchBar.text //INPUT
         print(searchBar.text!)
         if let address = searchBar.text {
-            //gymManager.fetchNearbyGyms(address)
-            let latitude = "50.4164582"
-            let longitude = "-5.100202299999978"
-            gymManager.fetchGyms(kmDistance: 1.0, latitude, longitude)
+            gymManager.fetchGyms(using: address, withinDistanceOf: K.nearbyDistance)
         }
         barButton.isEnabled = true
         searchBar.endEditing(true)
@@ -170,13 +166,8 @@ extension NearbyGymsViewController: UISearchBarDelegate {
         let action = UIAlertAction(title: "Search Gyms", style: .default) { (action) in
             //Result of action button pressed
             
-            if let lat = latitudeTextField.text, let long = longitudeTextField.text {
-                //   self.gymManager.fetchNearbyGyms(lat, long)
-                let latitude = "50.4164582"
-                let longitude = "-5.100202299999978"
-                //self.gymManager.performRequest()
-                self.gymManager.fetchGyms(kmDistance: 1.0, latitude, longitude)
-                
+            if let latitude = latitudeTextField.text, let longitude = longitudeTextField.text {
+                self.gymManager.fetchGyms(using: latitude, longitude, withDistanceOf: K.nearbyDistance)
                 print(self.gyms)
                 self.tableView.reloadData()
                 

@@ -9,8 +9,7 @@
 /* Begin PBXBuildFile section */
 		3637C301259E228D00A448AD /* NearbyGymsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3637C300259E228D00A448AD /* NearbyGymsViewController.swift */; };
 		36451EB525AB7A920044892E /* PlaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36451EB425AB7A920044892E /* PlaceModel.swift */; };
-		364A8E7625A7B95700D0CB30 /* GymManagerOG.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364A8E7525A7B95700D0CB30 /* GymManagerOG.swift */; };
-		364DEE8C25AA675E00A949BA /* GymManagerWorking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364DEE8B25AA675E00A949BA /* GymManagerWorking.swift */; };
+		364DEE8C25AA675E00A949BA /* GymManagerOLD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364DEE8B25AA675E00A949BA /* GymManagerOLD.swift */; };
 		365224D925AA5B520036A009 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365224D825AA5B520036A009 /* Response.swift */; };
 		3658488A25A6710D00A3DECB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3658488925A6710D00A3DECB /* Constants.swift */; };
 		369E86EB25AC7F54009ACD58 /* GymCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 369E86E925AC7F54009ACD58 /* GymCell.swift */; };
@@ -30,8 +29,7 @@
 /* Begin PBXFileReference section */
 		3637C300259E228D00A448AD /* NearbyGymsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyGymsViewController.swift; sourceTree = "<group>"; };
 		36451EB425AB7A920044892E /* PlaceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceModel.swift; sourceTree = "<group>"; };
-		364A8E7525A7B95700D0CB30 /* GymManagerOG.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GymManagerOG.swift; sourceTree = "<group>"; };
-		364DEE8B25AA675E00A949BA /* GymManagerWorking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GymManagerWorking.swift; sourceTree = "<group>"; };
+		364DEE8B25AA675E00A949BA /* GymManagerOLD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GymManagerOLD.swift; sourceTree = "<group>"; };
 		365224D825AA5B520036A009 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		3658488925A6710D00A3DECB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		369E86E925AC7F54009ACD58 /* GymCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GymCell.swift; sourceTree = "<group>"; };
@@ -118,8 +116,7 @@
 		36B3EA6D2578053400D22B47 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				364A8E7525A7B95700D0CB30 /* GymManagerOG.swift */,
-				364DEE8B25AA675E00A949BA /* GymManagerWorking.swift */,
+				364DEE8B25AA675E00A949BA /* GymManagerOLD.swift */,
 				369E86ED25ACA0C6009ACD58 /* GymManager.swift */,
 				365224D825AA5B520036A009 /* Response.swift */,
 				36451EB425AB7A920044892E /* PlaceModel.swift */,
@@ -199,12 +196,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				36B3EA732578105000D22B47 /* LoginViewController.swift in Sources */,
-				364A8E7625A7B95700D0CB30 /* GymManagerOG.swift in Sources */,
 				36451EB525AB7A920044892E /* PlaceModel.swift in Sources */,
 				365224D925AA5B520036A009 /* Response.swift in Sources */,
 				36B3EA742578105000D22B47 /* RegisterViewController.swift in Sources */,
 				369E86EB25AC7F54009ACD58 /* GymCell.swift in Sources */,
-				364DEE8C25AA675E00A949BA /* GymManagerWorking.swift in Sources */,
+				364DEE8C25AA675E00A949BA /* GymManagerOLD.swift in Sources */,
 				36B3EA5C2578049900D22B47 /* WelcomeViewController.swift in Sources */,
 				3637C301259E228D00A448AD /* NearbyGymsViewController.swift in Sources */,
 				36B3EA582578049900D22B47 /* AppDelegate.swift in Sources */,

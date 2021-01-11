@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 protocol GymManagerDelegate {
     func didUpdateGyms(gyms: [PlaceModel])
@@ -15,30 +16,32 @@ struct GymManager {
     
     var delegate: GymManagerDelegate?
     
-    let placesURL =
-    "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
-    //"https://maps.googleapis.com/maps/api/place/nearbysearch/json?type=gym&radius=1500"
-    
+    let placesURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
     let API_Key = "AIzaSyDQTyjE6jp4wwJRtqHWjMHbqlvHFJ-YAKI"
     
-    func fetchGyms(kmDistance: Double,_ latitide: String,_ longitude: String) {
-        let radius = String(Int(kmDistance * 1000))
-        print("radius: \(radius)")
-        //working URL - however wrong search
-        //let urlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=50.4164582,-5.100202299999978&radius=1000&keyword=gym&key=AIzaSyDQTyjE6jp4wwJRtqHWjMHbqlvHFJ-YAKI"
+    //Coordinate Mode
+    func fetchGyms(using latitide: String, _ longitude: String, withDistanceOf distanceKm: Double) {
         
-        //URL works in browser
-        //let urlString = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=50.4164582,-5.100202299999978&radius=1000&keyword=gym&key=AIzaSyDQTyjE6jp4wwJRtqHWjMHbqlvHFJ-YAKI"
-        
+        let radius = String(Int(distanceKm * 1000))
+       
         let urlString = "\(placesURL)location=\(latitide),\(longitude)&radius=\(radius)&keyword=gym&key=\(API_Key)" //change keyword to surf in other app
         
         performRequest(urlString: urlString)
         
-        //returns:
-        // https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=50.4164582,-5.100202299999978&radius=1000&keyword=gym&key=AIzaSyDQTyjE6jp4wwJRtqHWjMHbqlvHFJ-YAKI
-        
-        
-    } //added
+    }
+    
+    //Address Mode
+    func fetchGyms(using address: String, withinDistanceOf distanceKm: Double) {
+        getCoordinateFrom(address: address) { coordinate, error in
+            guard let coordinate = coordinate, error == nil else { return }
+            DispatchQueue.main.async {
+                print(address, "Location:", coordinate.latitude)
+                self.fetchGyms(using: String(coordinate.latitude), String(coordinate.longitude), withDistanceOf: distanceKm)
+            }
+        }
+    }
+    
+    
     
     func performRequest(urlString: String) {
         if let url = URL(string: urlString) {
@@ -83,59 +86,8 @@ struct GymManager {
         return places
     }
     
-    
-    
-    //        let url = URL(string: urlString)
-    //
-    //        guard url != nil else {
-    //            return
-    //            //log something to say what happened
-    //        }
-    //
-    //
-    //        let session = URLSession(configuration: .default)
-    //
-    //        let task = session.dataTask(with: url!) { (data, response, error) in
-    //
-    //            if error == nil && data != nil {//check for errors
-    //
-    //                if let gyms = self.parseJSON(gymData: data!) {
-    //                    self.delegate?.didUpdateGyms(gyms: gyms)
-    //                }
-    //            }
-    //        }
-    //        //
-    //        task.resume()
-    //
-    //
-    //    }
-    //
-    //    func parseJSON(gymData: Data) -> [GymModel]? {
-    //
-    //        //parse json
-    //        var gyms: [GymModel] = []
-    //        let decoder = JSONDecoder()
-    //        do {
-    //            let decodedData = try decoder.decode(Response.self, from: gymData)
-    //            let count = decodedData.results!.count
-    //
-    //            if decodedData.results!.isEmpty {
-    //
-    //            } else {
-    //                for index in 0..<count {
-    //                    let name = decodedData.results![index].name
-    //                    let rating = decodedData.results![index].rating
-    //                    let openNow = decodedData.results![index].opening_hours?.open_now
-    //
-    //                    let gym = GymModel(name: name, rating: rating, openNow: openNow)
-    //                    gyms.append(gym)
-    //                }
-    //                //print(gyms)
-    //                return gyms
-    //            }
-    //        } catch {
-    //            print("Error in parsing")
-    //        }
-    //        return gyms
-    //    }
+    //MARK: - Helper Methods
+    func getCoordinateFrom(address: String, completion: @escaping(_ coordinate: CLLocationCoordinate2D?, _ error: Error?) -> () ) {
+        CLGeocoder().geocodeAddressString(address) { completion($0?.first?.location?.coordinate, $1) }
+    }
 }
