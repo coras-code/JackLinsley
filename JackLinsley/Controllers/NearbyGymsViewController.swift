@@ -29,6 +29,8 @@ class NearbyGymsViewController : UITableViewController, GymManagerDelegate {
         searchBar.delegate = self
         gymManager.delegate = self
         modeSelection(coordinateModeEnabled: coordinateModeEnabled)
+        
+        tableView.register(UINib(nibName: K.cellNibName, bundle: nil), forCellReuseIdentifier: K.cellIdentifier)
     }
     
     func modeSelection(coordinateModeEnabled: Bool) {
@@ -49,33 +51,35 @@ class NearbyGymsViewController : UITableViewController, GymManagerDelegate {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "GymCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! GymCell
         
         cell.selectionStyle = .none
-        
-        // Linking cell in view to controller - create a new CELL subclass
-        let nameLabel = cell.viewWithTag(1000) as! UILabel
-        let openingHoursLabel = cell.viewWithTag(100) as! UILabel
-        let imagePosition1 = cell.viewWithTag(1) as! UIImageView
-        let imagePosition2 = cell.viewWithTag(2) as! UIImageView
-        let imagePosition3 = cell.viewWithTag(3) as! UIImageView
-        let imagePosition4 = cell.viewWithTag(4) as! UIImageView
-        let imagePosition5 = cell.viewWithTag(5) as! UIImageView
+//
+//        // Linking cell in view to controller - create a new CELL subclass
+//        let nameLabel = cell.viewWithTag(1000) as! UILabel
+//        let openingHoursLabel = cell.viewWithTag(100) as! UILabel
+//        let imagePosition1 = cell.viewWithTag(1) as! UIImageView
+//        let imagePosition2 = cell.viewWithTag(2) as! UIImageView
+//        let imagePosition3 = cell.viewWithTag(3) as! UIImageView
+//        let imagePosition4 = cell.viewWithTag(4) as! UIImageView
+//        let imagePosition5 = cell.viewWithTag(5) as! UIImageView
         
         //setting up cell
-        nameLabel.text = gyms[indexPath.row].name
+        cell.nameLabel.text = gyms[indexPath.row].name
+        
+       // nameLabel.text = gyms[indexPath.row].name
         
         let openingDescription = gyms[indexPath.row].openingDescription
-        openingHoursLabel.text = openingDescription
-        openingHoursLabel.textColor = openingDescription == "Open Now" ? UIColor.black : UIColor.red
+        cell.openingHoursLabel.text = openingDescription
+        cell.openingHoursLabel.textColor = openingDescription == "Open Now" ? UIColor.black : UIColor.red
         
         if let ratingDouble = gyms[indexPath.row].rating {
             let rating = Int(ratingDouble)
             
-            let ratingPositions = [imagePosition1, imagePosition2, imagePosition3, imagePosition4, imagePosition5]
+            let ratingPositions = [cell.ratingPosition1, cell.ratingPosition2, cell.ratingPosition3, cell.ratingPosition4, cell.ratingPosition5]
             
             for (index, position) in ratingPositions.enumerated() {
-                position.image = index < rating ? UIImage(named: "star_icon_filled") : UIImage(named: "star_icon")
+                position!.image = index < rating ? UIImage(named: K.images.filledStar) : UIImage(named: K.images.emptyStar)
             }
         }
         
@@ -194,25 +198,6 @@ extension NearbyGymsViewController: UISearchBarDelegate {
         //latitudeTextField.text! //longitudeTextField.text! - this needs to be passed in as an input
     }
     
-}
-
-
-
-
-
-
-
-//alternate for the cel? delete if dont use?
-class GymCell: UITableViewCell {
-    @IBOutlet weak var nameLabel: UILabel! //naming check, also check constriaints and colours and refactoring
-    
-    @IBOutlet weak var openingHoursLabel: UILabel!
-    
-    @IBOutlet weak var ratingPosition1: UIImageView! //make this a class
-    @IBOutlet weak var ratingPosition2: UIImageView!
-    @IBOutlet weak var ratingPosition3: UIImageView!
-    @IBOutlet weak var ratingPosition4: UIImageView!
-    @IBOutlet weak var ratingPosition5: UIImageView!
 }
 
 
