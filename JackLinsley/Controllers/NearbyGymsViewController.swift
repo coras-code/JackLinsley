@@ -54,21 +54,9 @@ class NearbyGymsViewController : UITableViewController, GymManagerDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! GymCell
         
         cell.selectionStyle = .none
-//
-//        // Linking cell in view to controller - create a new CELL subclass
-//        let nameLabel = cell.viewWithTag(1000) as! UILabel
-//        let openingHoursLabel = cell.viewWithTag(100) as! UILabel
-//        let imagePosition1 = cell.viewWithTag(1) as! UIImageView
-//        let imagePosition2 = cell.viewWithTag(2) as! UIImageView
-//        let imagePosition3 = cell.viewWithTag(3) as! UIImageView
-//        let imagePosition4 = cell.viewWithTag(4) as! UIImageView
-//        let imagePosition5 = cell.viewWithTag(5) as! UIImageView
         
-        //setting up cell
         cell.nameLabel.text = gyms[indexPath.row].name
-        
-       // nameLabel.text = gyms[indexPath.row].name
-        
+
         let openingDescription = gyms[indexPath.row].openingDescription
         cell.openingHoursLabel.text = openingDescription
         cell.openingHoursLabel.textColor = openingDescription == "Open Now" ? UIColor.black : UIColor.red
@@ -98,7 +86,7 @@ class NearbyGymsViewController : UITableViewController, GymManagerDelegate {
         modeSelection(coordinateModeEnabled: coordinateModeEnabled)
         searchBar.text = ""// clear the search bar
         searchBar.resignFirstResponder()
-        //clear table view?
+        //clear table view? //leave there like google
         //replace tableview with current location date, to show this have a filled location
     }
 }
