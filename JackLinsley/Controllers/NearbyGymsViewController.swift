@@ -13,9 +13,9 @@ class NearbyGymsViewController : UITableViewController, GymManagerDelegate {
     //how to name this boolean
     var coordinateModeEnabled = true
     var gymManager = GymManager()
-    var gyms: [GymModel] = []
+    var gyms: [PlaceModel] = []
     
-    func didUpdateGyms(gyms: [GymModel]) {
+    func didUpdateGyms(gyms: [PlaceModel]) {
         DispatchQueue.main.async {
             self.gyms = gyms
             self.tableView.reloadData()
@@ -116,7 +116,9 @@ extension NearbyGymsViewController: UISearchBarDelegate {
         print(searchBar.text!)
         if let address = searchBar.text {
             //gymManager.fetchNearbyGyms(address)
-            gymManager.performRequest()
+            let latitude = "50.4164582"
+            let longitude = "-5.100202299999978"
+            gymManager.fetchGyms(kmDistance: 1.0, latitude, longitude)
         }
         barButton.isEnabled = true
         searchBar.endEditing(true)
@@ -170,7 +172,11 @@ extension NearbyGymsViewController: UISearchBarDelegate {
             
             if let lat = latitudeTextField.text, let long = longitudeTextField.text {
                 //   self.gymManager.fetchNearbyGyms(lat, long)
-                self.gymManager.performRequest()
+                let latitude = "50.4164582"
+                let longitude = "-5.100202299999978"
+                //self.gymManager.performRequest()
+                self.gymManager.fetchGyms(kmDistance: 1.0, latitude, longitude)
+                
                 print(self.gyms)
                 self.tableView.reloadData()
                 

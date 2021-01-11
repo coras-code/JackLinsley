@@ -8,11 +8,10 @@
 import Foundation
 //WeatherData, GymData
 struct Response: Codable {
-    var next_page_token: String = ""
-    var results: [Gym]? //not sure if i should make it optional
+    var results: [Place]? //not sure if i should make it optional
 }
 
-struct Gym: Codable {
+struct Place: Codable {
     var name: String?
     var rating: Double? = 0.0
     var opening_hours: OpeningInfo?

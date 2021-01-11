@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GymModel {
+struct PlaceModel {
     let name: String?
     let rating: Double?
     let openNow: Bool?
