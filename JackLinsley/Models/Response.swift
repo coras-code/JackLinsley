@@ -26,24 +26,3 @@ struct OpeningInfo: Codable {
 //    }
 }
 
-//
-//import Foundation
-////WeatherData, GymData
-//struct Response: Codable {
-//    var next_page_token: String = ""
-//    var results: [Gym]? //not sure if i should make it optional
-//}
-//
-//struct Gym: Codable {
-//    var name: String?
-//    var rating: Int?
-//   // var opening_hours: [OpeningInfo]?
-//}
-//
-////struct OpeningInfo: Codable {
-////    var openingHours: Bool?
-////
-////    enum CodingKeys: String, CodingKey {
-////    case openingHours = "open_now"
-////    }
-////}
