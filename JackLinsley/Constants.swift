@@ -14,7 +14,17 @@ struct K {
     //static let cellIdentifier = "ReusableGymCell" //need to change this in cell storyboard
     static let cellIdentifier = "ReusableCell"
     static let nearbyDistance = 1.0
-    
+    static let placesURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
+    static let apiKey = "AIzaSyDQTyjE6jp4wwJRtqHWjMHbqlvHFJ-YAKI"
+    static let openNow = "Open Now"
+    static let closedNow = "Closed Now"
+    static let coordinateSearchPlaceholder = "Search using latitude and longitude"
+    static let addressSearchPlaceholder = "Search using address"
+    static let latitudeTextfieldPlaceholder = "Enter Latitude"
+    static let longitudeTextfieldPlaceholder = "Enter Longitude"
+    static let searchButton = "Search"
+    static let cancelButton = "Cancel"
+   
     struct BrandColours {
         static let turquoise = "BrandTurquoise"
         static let blue = "BrandBlue"
@@ -24,14 +34,18 @@ struct K {
     }
     
     struct images {
-           static let homeBackground = "home_screen"
-           static let filledStar = "star_icon_filled"
-           static let emptyStar = "star_icon"
-           static let textField = "text_field"
+        static let homeBackground = "home_screen"
+        static let filledStar = "star_icon_filled"
+        static let emptyStar = "star_icon"
+        static let textField = "text_field"
+        static let coordinateInput = "globe" //icon
+        static let addressInput = "pencil.circle" //icon
+        
     }
     
     struct API {
              static let parsingError = ""
+            static let noResultsError = ""
              static let baseURL = "star_icon_filled"
              static let emptyStar = "star_icon"
              static let textField = "text_field"

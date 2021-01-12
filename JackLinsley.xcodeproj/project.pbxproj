@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3600AD8325ACF4010098E11C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3600AD8225ACF4010098E11C /* Extensions.swift */; };
+		3607448525ADBF7B00390AF5 /* GooglePlaces-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3607448425ADBF7B00390AF5 /* GooglePlaces-Info.plist */; };
+		3607448725ADBFA400390AF5 /* MyGooglePlaces-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3607448625ADBFA400390AF5 /* MyGooglePlaces-Info.plist */; };
+		3607448B25ADBFF600390AF5 /* InfoPlistHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3607448A25ADBFF600390AF5 /* InfoPlistHelper.swift */; };
 		3637C301259E228D00A448AD /* NearbyGymsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3637C300259E228D00A448AD /* NearbyGymsViewController.swift */; };
 		36451EB525AB7A920044892E /* PlaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36451EB425AB7A920044892E /* PlaceModel.swift */; };
 		364DEE8C25AA675E00A949BA /* GymManagerOLD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364DEE8B25AA675E00A949BA /* GymManagerOLD.swift */; };
@@ -27,6 +31,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3600AD8225ACF4010098E11C /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		3607448425ADBF7B00390AF5 /* GooglePlaces-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GooglePlaces-Info.plist"; sourceTree = "<group>"; };
+		3607448625ADBFA400390AF5 /* MyGooglePlaces-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MyGooglePlaces-Info.plist"; sourceTree = "<group>"; };
+		3607448A25ADBFF600390AF5 /* InfoPlistHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoPlistHelper.swift; sourceTree = "<group>"; };
 		3637C300259E228D00A448AD /* NearbyGymsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyGymsViewController.swift; sourceTree = "<group>"; };
 		36451EB425AB7A920044892E /* PlaceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceModel.swift; sourceTree = "<group>"; };
 		364DEE8B25AA675E00A949BA /* GymManagerOLD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GymManagerOLD.swift; sourceTree = "<group>"; };
@@ -87,6 +95,10 @@
 				36B3EA622578049E00D22B47 /* LaunchScreen.storyboard */,
 				36B3EA652578049E00D22B47 /* Info.plist */,
 				3658488925A6710D00A3DECB /* Constants.swift */,
+				3600AD8225ACF4010098E11C /* Extensions.swift */,
+				3607448A25ADBFF600390AF5 /* InfoPlistHelper.swift */,
+				3607448425ADBF7B00390AF5 /* GooglePlaces-Info.plist */,
+				3607448625ADBFA400390AF5 /* MyGooglePlaces-Info.plist */,
 			);
 			path = JackLinsley;
 			sourceTree = "<group>";
@@ -182,6 +194,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				36B3EA642578049E00D22B47 /* LaunchScreen.storyboard in Resources */,
+				3607448725ADBFA400390AF5 /* MyGooglePlaces-Info.plist in Resources */,
+				3607448525ADBF7B00390AF5 /* GooglePlaces-Info.plist in Resources */,
 				369E86EC25AC7F54009ACD58 /* GymCell.xib in Resources */,
 				36B3EA612578049E00D22B47 /* Assets.xcassets in Resources */,
 				36B3EA6F2578070400D22B47 /* Main.storyboard in Resources */,
@@ -204,10 +218,12 @@
 				36B3EA5C2578049900D22B47 /* WelcomeViewController.swift in Sources */,
 				3637C301259E228D00A448AD /* NearbyGymsViewController.swift in Sources */,
 				36B3EA582578049900D22B47 /* AppDelegate.swift in Sources */,
+				3607448B25ADBFF600390AF5 /* InfoPlistHelper.swift in Sources */,
 				36B3EA752578105000D22B47 /* ChatViewController.swift in Sources */,
 				369E86EE25ACA0C6009ACD58 /* GymManager.swift in Sources */,
 				36B3EA5A2578049900D22B47 /* SceneDelegate.swift in Sources */,
 				3658488A25A6710D00A3DECB /* Constants.swift in Sources */,
+				3600AD8325ACF4010098E11C /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

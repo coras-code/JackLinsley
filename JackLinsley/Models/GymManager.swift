@@ -16,12 +16,12 @@ struct GymManager {
     
     var delegate: GymManagerDelegate?
     
-    let placesURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
-    let API_Key = "AIzaSyDQTyjE6jp4wwJRtqHWjMHbqlvHFJ-YAKI"
+    let placesURL = K.placesURL
+    //let API_Key = InfoPlistHelper.shared.adjustAPIKey()
+    let API_Key = InfoPlistHelper.shared.apiKey
     
     //Coordinate Mode
     func fetchGyms(using latitide: String, _ longitude: String, withDistanceOf distanceKm: Double) {
-        
         let radius = String(Int(distanceKm * 1000))
        
         let urlString = "\(placesURL)location=\(latitide),\(longitude)&radius=\(radius)&keyword=gym&key=\(API_Key)" //change keyword to surf in other app
@@ -32,16 +32,15 @@ struct GymManager {
     
     //Address Mode
     func fetchGyms(using address: String, withinDistanceOf distanceKm: Double) {
+        
         getCoordinateFrom(address: address) { coordinate, error in
             guard let coordinate = coordinate, error == nil else { return }
             DispatchQueue.main.async {
-                print(address, "Location:", coordinate.latitude)
                 self.fetchGyms(using: String(coordinate.latitude), String(coordinate.longitude), withDistanceOf: distanceKm)
+                print("Here \(coordinate.latitude), \(coordinate.longitude)")
             }
         }
     }
-    
-    
     
     func performRequest(urlString: String) {
         if let url = URL(string: urlString) {
@@ -81,7 +80,7 @@ struct GymManager {
                 print("No results returned")
             }
         } catch {
-            print(error)
+            print("Parsing Error:\(error)")
         }
         return places
     }

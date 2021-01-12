@@ -14,7 +14,8 @@ struct PlaceModel {
     
     var openingDescription: String {
         if openNow != nil {
-            return openNow! ? "Open Now" : "Closed Now"
+            return openNow! ? K.openNow : K.closedNow
+            
         }
         return ""
     }

@@ -35,12 +35,12 @@ class NearbyGymsViewController : UITableViewController, GymManagerDelegate {
     
     func modeSelection(coordinateModeEnabled: Bool) {
         if coordinateModeEnabled {
-            barButton.image =  UIImage(systemName: "globe")
-            searchBar.placeholder = "Search using latitude and longitude"
+            barButton.image =  UIImage(systemName:K.images.coordinateInput)
+            searchBar.placeholder = K.coordinateSearchPlaceholder
         } else {
             //addressModeEnabled:
-            barButton.image =  UIImage(systemName: "pencil.circle")
-            searchBar.placeholder = "Search using address"
+            barButton.image =  UIImage(systemName: K.images.addressInput)
+            searchBar.placeholder = K.addressSearchPlaceholder
         }
     }
     
@@ -59,7 +59,7 @@ class NearbyGymsViewController : UITableViewController, GymManagerDelegate {
 
         let openingDescription = gyms[indexPath.row].openingDescription
         cell.openingHoursLabel.text = openingDescription
-        cell.openingHoursLabel.textColor = openingDescription == "Open Now" ? UIColor.black : UIColor.red
+        cell.openingHoursLabel.textColor = openingDescription == K.openNow ? UIColor.black : UIColor.red
         
         if let ratingDouble = gyms[indexPath.row].rating {
             let rating = Int(ratingDouble)
@@ -97,39 +97,37 @@ class NearbyGymsViewController : UITableViewController, GymManagerDelegate {
 
 //MARK: - Search Bar Methods
 extension NearbyGymsViewController: UISearchBarDelegate {
-    //Address Mode Input
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        // searchBar.text //INPUT
-        print(searchBar.text!)
-        if let address = searchBar.text {
-            gymManager.fetchGyms(using: address, withinDistanceOf: K.nearbyDistance)
-        }
-        barButton.isEnabled = true
-        searchBar.endEditing(true)
-    }
     
-    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
-        //this means the user can exit unless they enter something - allow them to have an exit - tap gesture (tapping out side the keyboard??)
-        if searchBar.text != "" {
-            return true
-        } else {
-            searchBar.shake()
-            // searchBar.resignFirstResponder() //or end editing??
-            return false
-        }
-    }
-    
-    //Coordinate Mode Input
+    //Search Bar depending on mode selected
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         if coordinateModeEnabled {
             coordinateEntry()
             return false
         } else {
             barButton.isEnabled = false
+            searchBar.searchTextField.addAccessory(numberpad: false)
             return true
         }
     }
     
+    //Address Mode Input
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if searchBar.text != "", let address = searchBar.text {
+            gymManager.fetchGyms(using: address, withinDistanceOf: K.nearbyDistance)
+           searchBar.endEditing(true)
+        } else {
+            searchBar.shake()
+        }
+    }
+    
+    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+        if searchBar.text != "" || searchBar.resignFirstResponder() {
+            barButton.isEnabled = true
+            return true
+        } else {return false}
+    }
+    
+    //Coordinate Mode Input
     func coordinateEntry() {
         var latitudeTextField = UITextField()
         var longitudeTextField = UITextField()
@@ -137,121 +135,39 @@ extension NearbyGymsViewController: UISearchBarDelegate {
         let alert = UIAlertController(title: K.alertTitle, message: K.alertMessage, preferredStyle: .alert)
         
         alert.addTextField { (alertTextField) in
-            alertTextField.placeholder = "Enter Latitude" //K.latitudeTextFieldPlaceholder
+            alertTextField.placeholder = K.latitudeTextfieldPlaceholder
             alertTextField.keyboardType = .numberPad
-            alertTextField.addNumericAccessory()
+            alertTextField.addAccessory(numberpad: true)
             latitudeTextField = alertTextField
         }
         
         alert.addTextField { (alertTextField) in
-            alertTextField.placeholder = "Enter Longitude" //K.longitudeTextFieldPlaceholder
+            alertTextField.placeholder = K.longitudeTextfieldPlaceholder
             alertTextField.keyboardType = .numberPad
-            alertTextField.addNumericAccessory()
+            alertTextField.addAccessory(numberpad: true)
             longitudeTextField = alertTextField
             
         }
         
-        let action = UIAlertAction(title: "Search Gyms", style: .default) { (action) in
-            //Result of action button pressed
+        let action = UIAlertAction(title: K.searchButton, style: .default) { (action) in
             
             if let latitude = latitudeTextField.text, let longitude = longitudeTextField.text {
-                self.gymManager.fetchGyms(using: latitude, longitude, withDistanceOf: K.nearbyDistance)
-                print(self.gyms)
-                self.tableView.reloadData()
-                
+                if latitude != "" && longitude != "" {
+                    self.gymManager.fetchGyms(using: latitude, longitude, withDistanceOf: K.nearbyDistance)
+                    self.searchBar.text = "\(latitude), \(longitude)"
+                    print(self.gyms)
+                    self.tableView.reloadData()
+                } else {
+                    self.searchBar.shake()
+                }
             }
-            
-            
-            //            if latitudeTextField.text != "", longitudeTextField.text != "" {
-            //                self.searchBar.searchTextField.text = "\(latitudeTextField.text!); \(longitudeTextField.text!)" //API INPUT
-            //            } else {self.searchBar.shake()}
-            
-            //can force unwrap because a textfield can never be nil - just an empty string
-            //need to deal with empty strings: one and other, maybe a shake and says enter both
-            //loading cell appears //then tabledata reloads with new info
         }
         
-        let cancel = UIAlertAction(title: "Cancel", style: .default) { (action) in
-            //Result of cancel button pressed
-            //pass "" in to lat and long how does this affect api
-        }
+        let cancel = UIAlertAction(title: K.cancelButton, style: .default) { (action) in } //Just dismisses alert
         
         alert.addAction(cancel)
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
-        
-        //latitudeTextField.text! //longitudeTextField.text! - this needs to be passed in as an input
     }
     
-}
-
-
-extension UITextField {
-    
-    
-    //combine these
-    
-    //also dismiss keyboard by tapping else where
-    //    func setupTextFields() {
-    //           let toolbar = UIToolbar()
-    //           let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
-    //                                           target: nil, action: nil)
-    //           let doneButton = UIBarButtonItem(title: "Done", style: .done,
-    //                                            target: self, action: #selector(doneButtonTapped))
-    //
-    //           toolbar.setItems([flexSpace, doneButton], animated: true)
-    //           toolbar.sizeToFit()
-    //
-    //           textField1.inputAccessoryView = toolbar
-    //           textField2.inputAccessoryView = toolbar
-    //       }
-    //
-    //       @objc func doneButtonTapped() {
-    //           view.endEditing(true)
-    //       }
-    
-    func addNumericAccessory() {
-        let numberToolbar = UIToolbar()
-        numberToolbar.barStyle = UIBarStyle.default
-        
-        var accessories : [UIBarButtonItem] = []
-        
-        accessories.append(UIBarButtonItem(title: "+/-", style: UIBarButtonItem.Style.plain, target: self, action: #selector(plusMinusPressed)))
-        accessories.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil))
-        accessories.append(UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.plain, target: self, action: #selector(numberPadDone)))
-        
-        numberToolbar.items = accessories
-        numberToolbar.sizeToFit()
-        
-        inputAccessoryView = numberToolbar
-    }
-    
-    @objc func numberPadDone() {
-        self.resignFirstResponder()
-    }
-    
-    @objc func plusMinusPressed() {
-        guard let currentText = self.text else {
-            return
-        }
-        if currentText.hasPrefix("-") {
-            let offsetIndex = currentText.index(currentText.startIndex, offsetBy: 1)
-            let substring = currentText[offsetIndex...]  //remove first character
-            self.text = String(substring)
-        }
-        else {
-            self.text = "-" + currentText
-        }
-    }
-    
-}
-
-extension UIView {
-    func shake() {
-        let animation = CAKeyframeAnimation(keyPath: "transform.translation.x")
-        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
-        animation.duration = 0.6
-        animation.values = [-20.0, 20.0, -20.0, 20.0, -10.0, 10.0, -5.0, 5.0, 0.0 ]
-        layer.add(animation, forKey: "shake")
-    }
 }
